@@ -9,7 +9,7 @@ public class ConnectDB {
     
     public static final String URL = "jdbc:mysql://localhost:3306/dbvotermanagement";
     public static final String USER = "root";
-    public static final String CLAVE = "";
+    public static final String CLAVE = "root";
      
     public Connection getConexion(){
         Connection con = null;
