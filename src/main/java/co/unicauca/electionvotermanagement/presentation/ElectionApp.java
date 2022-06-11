@@ -21,7 +21,7 @@ public class ElectionApp {
         
         try {
             Connection con = connect.getConexion();
-            System.out.println("Conection correct");
+            System.out.println("Conection version 2 ");
         } catch (Exception e) {
             System.out.println("Error: "+ e);
         }   
