@@ -9,12 +9,12 @@ package co.unicauca.electionvotermanagement.presentation;
  *
  * @author mfcaicedo
  */
-public class GUIConsulta extends javax.swing.JInternalFrame {
+public class GUIQueryPlace extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form GUIConsulta
      */
-    public GUIConsulta() {
+    public GUIQueryPlace() {
         initComponents();
     }
 
@@ -40,6 +40,8 @@ public class GUIConsulta extends javax.swing.JInternalFrame {
         jPanelResultado = new javax.swing.JPanel();
         jScrollPaneContTable = new javax.swing.JScrollPane();
         jTableResultado = new javax.swing.JTable();
+
+        setPreferredSize(new java.awt.Dimension(889, 435));
 
         jLabelConsultaLugarVotacion.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabelConsultaLugarVotacion.setText("CONSULTA LUGAR DE VOTACIÓN");

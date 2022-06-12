@@ -1,13 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package co.unicauca.electionvotermanagement.presentation;
 
 /**
  *
- * @author HP
+ * @author mfcaicedo, danieleraso
  */
 public class GUIMenu extends javax.swing.JFrame {
 
@@ -31,18 +26,21 @@ public class GUIMenu extends javax.swing.JFrame {
 
         jDesktopPaneEscritorio = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenuConsultas = new javax.swing.JMenu();
-        jMenuItemConLugVotacion = new javax.swing.JMenuItem();
         jMenuAdmin = new javax.swing.JMenu();
         jMenuItemAgregarLugaresVotacion = new javax.swing.JMenuItem();
         jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenuItemAgregarVotantes = new javax.swing.JMenuItem();
+        jMenuConsultas = new javax.swing.JMenu();
+        jMenuItemConLugVotacion = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenuItemAcercaDe = new javax.swing.JMenuItem();
         jMenuSalir = new javax.swing.JMenu();
         jMenuItemSalir = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(920, 530));
+
+        jDesktopPaneEscritorio.setPreferredSize(new java.awt.Dimension(900, 460));
 
         javax.swing.GroupLayout jDesktopPaneEscritorioLayout = new javax.swing.GroupLayout(jDesktopPaneEscritorio);
         jDesktopPaneEscritorio.setLayout(jDesktopPaneEscritorioLayout);
@@ -55,6 +53,27 @@ public class GUIMenu extends javax.swing.JFrame {
             .addGap(0, 463, Short.MAX_VALUE)
         );
 
+        jMenuAdmin.setText("Administración");
+
+        jMenuItemAgregarLugaresVotacion.setText("Agregar lugares votación");
+        jMenuItemAgregarLugaresVotacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemAgregarLugaresVotacionActionPerformed(evt);
+            }
+        });
+        jMenuAdmin.add(jMenuItemAgregarLugaresVotacion);
+        jMenuAdmin.add(jSeparator1);
+
+        jMenuItemAgregarVotantes.setText("Agregar votantes");
+        jMenuItemAgregarVotantes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemAgregarVotantesActionPerformed(evt);
+            }
+        });
+        jMenuAdmin.add(jMenuItemAgregarVotantes);
+
+        jMenuBar1.add(jMenuAdmin);
+
         jMenuConsultas.setText("Consulta");
 
         jMenuItemConLugVotacion.setText("Consulta lugar votación ");
@@ -66,17 +85,6 @@ public class GUIMenu extends javax.swing.JFrame {
         jMenuConsultas.add(jMenuItemConLugVotacion);
 
         jMenuBar1.add(jMenuConsultas);
-
-        jMenuAdmin.setText("Administración");
-
-        jMenuItemAgregarLugaresVotacion.setText("Agregar lugares votación");
-        jMenuAdmin.add(jMenuItemAgregarLugaresVotacion);
-        jMenuAdmin.add(jSeparator1);
-
-        jMenuItemAgregarVotantes.setText("Agregar votantes");
-        jMenuAdmin.add(jMenuItemAgregarVotantes);
-
-        jMenuBar1.add(jMenuAdmin);
 
         jMenu3.setText("Ayuda");
 
@@ -105,13 +113,13 @@ public class GUIMenu extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jDesktopPaneEscritorio)
+                .addComponent(jDesktopPaneEscritorio, javax.swing.GroupLayout.DEFAULT_SIZE, 923, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jDesktopPaneEscritorio)
+                .addComponent(jDesktopPaneEscritorio, javax.swing.GroupLayout.DEFAULT_SIZE, 463, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -126,7 +134,7 @@ public class GUIMenu extends javax.swing.JFrame {
      * Método que invoca al jFrama interno de la consulta 
      */
     private void invocarGUIConsulta(){
-        GUIConsulta objConsulta = new GUIConsulta();
+        GUIQueryPlace objConsulta = new GUIQueryPlace();
         objConsulta.setMaximizable(true);
         this.jDesktopPaneEscritorio.add(objConsulta);
         objConsulta.show();
@@ -147,6 +155,28 @@ public class GUIMenu extends javax.swing.JFrame {
         // TODO add your handling code here:
         invocarGUIConsulta();
     }//GEN-LAST:event_jMenuItemConLugVotacionActionPerformed
+    /**
+     * Accion del MenuItem de agregar lugares de votacion 
+     * @param evt 
+     */
+    private void jMenuItemAgregarLugaresVotacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAgregarLugaresVotacionActionPerformed
+        // TODO add your handling code here:
+        GUIVotingPlace objPlace = new GUIVotingPlace();
+        objPlace.setMaximizable(true);
+        this.jDesktopPaneEscritorio.add(objPlace);
+        objPlace.show();
+    }//GEN-LAST:event_jMenuItemAgregarLugaresVotacionActionPerformed
+    /**
+     * Evento del MenuItem Agredar votantes 
+     * @param evt 
+     */
+    private void jMenuItemAgregarVotantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAgregarVotantesActionPerformed
+        // TODO add your handling code here:
+        GUIVoters objVoter = new GUIVoters();
+        objVoter.setMaximizable(true);
+        this.jDesktopPaneEscritorio.add(objVoter);
+        objVoter.show();
+    }//GEN-LAST:event_jMenuItemAgregarVotantesActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane jDesktopPaneEscritorio;
