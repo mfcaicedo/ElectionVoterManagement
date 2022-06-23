@@ -169,21 +169,15 @@ public class GUIVotingPlace extends javax.swing.JInternalFrame {
         String addressPlace = this.jtxtAddressPlace.getText();
         int numTables = this.jSliderNumTables.getValue();
         int voterCapacity = this.jSliderVoterCapacity.getValue();
-        System.out.println("nomnbre: "+ namePlace);
-        System.out.println("dir: "+ addressPlace);
-        System.out.println("numero mesas: "+ numTables);
-        System.out.println("capacidad: "+ voterCapacity);
         try {
             VotingPlace objPlace = new VotingPlace(namePlace, addressPlace, numTables);
-            
-
-            
+           
             ServiceVotingPlace objServiceVoting = new ServiceVotingPlace();
             //creamos el lugar de votacion 
             int result = objServiceVoting.addVotingPlace(objPlace);
             if (result == 1) {
                 //creo las mesas 
-                for (int i = 0; i < numTables; i++) {
+                for (int i = 1; i <= numTables; i++) {
                     objPlace.addVotingTable(namePlace+"_"+i, voterCapacity);
                 }
                 for (int i = 0; i < objPlace.getNumTables(); i++) {
