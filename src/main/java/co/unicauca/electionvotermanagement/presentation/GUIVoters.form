@@ -56,9 +56,9 @@
                               <Group type="102" attributes="0">
                                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                       <Component id="jLabelLastName" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jtxtLastName1" max="32767" attributes="0"/>
+                                      <Component id="jtxtIdentifier" max="32767" attributes="0"/>
                                       <Component id="jLabelIdentifier" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jtxtLastName2" max="32767" attributes="0"/>
+                                      <Component id="jtxtLastName" max="32767" attributes="0"/>
                                       <Component id="jLabelVotingPlace" alignment="0" min="-2" max="-2" attributes="0"/>
                                       <Component id="jComboBoxVotingPlaces" alignment="0" max="32767" attributes="0"/>
                                       <Component id="jButtonRegisterVoter" alignment="0" min="-2" pref="330" max="-2" attributes="0"/>
@@ -99,16 +99,16 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jtxtName" min="-2" max="-2" attributes="0"/>
-                      <Component id="jtxtLastName2" alignment="0" min="-2" max="-2" attributes="0"/>
+                      <Component id="jtxtLastName" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="unrelated" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="jLabelIdentifier" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jtxtLastName1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jtxtDireccion" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jtxtIdentifier" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -166,7 +166,7 @@
             <Property name="text" type="java.lang.String" value="NAME:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jtxtLastName1">
+        <Component class="javax.swing.JTextField" name="jtxtIdentifier">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelIdentifier">
           <Properties>
@@ -176,7 +176,7 @@
             <Property name="text" type="java.lang.String" value="NO. IDENTIFICACI&#xd3;N (CC):"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="jtxtLastName2">
+        <Component class="javax.swing.JTextField" name="jtxtLastName">
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelVotingPlace">
           <Properties>
@@ -199,14 +199,12 @@
         <Component class="javax.swing.JComboBox" name="jComboBoxVotingPlaces">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="4">
-                <StringItem index="0" value="Item 1"/>
-                <StringItem index="1" value="Item 2"/>
-                <StringItem index="2" value="Item 3"/>
-                <StringItem index="3" value="Item 4"/>
-              </StringArray>
+              <StringArray count="0"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="jComboBoxVotingPlacesItemStateChanged"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
@@ -216,7 +214,7 @@
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Dialog" size="14" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="LUGAR DE VOTACI&#xd3;N:"/>
+            <Property name="text" type="java.lang.String" value="MESA DE VOTACI&#xd3;N:"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelAssignedTable">

@@ -5,6 +5,12 @@
  */
 package co.unicauca.electionvotermanagement.presentation;
 
+import co.unicauca.electionvotermanagement.service.ServiceVoter;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author mfcaicedo
@@ -61,6 +67,11 @@ public class GUIQueryPlace extends javax.swing.JInternalFrame {
 
         jButtonConsultar.setBackground(new java.awt.Color(0, 176, 172));
         jButtonConsultar.setText("CONSULTAR");
+        jButtonConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonConsultarActionPerformed(evt);
+            }
+        });
 
         jLabelTituloResultado.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         jLabelTituloResultado.setText("INFORMACIÓN DEL LUGAR DE VOTACIÓN");
@@ -69,9 +80,6 @@ public class GUIQueryPlace extends javax.swing.JInternalFrame {
 
         jTableResultado.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
                 {null, null, null, null}
             },
             new String [] {
@@ -163,7 +171,41 @@ public class GUIQueryPlace extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Acción del boton para consultar un votante por identificación 
+     * @param evt 
+     */
+    private void jButtonConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarActionPerformed
+        try {
+            // recupero el campo
+            int identifierVoter = Integer.parseInt(this.jtxtIdentifier.getText());
+            ServiceVoter objService = new ServiceVoter();
+            String respuesta = objService.searchVotingPlace(identifierVoter);
+            if (!respuesta.equals("")) {
+               //cargamos la tabla 
+                cargarTabla(respuesta);
+                
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(GUIQueryPlace.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_jButtonConsultarActionPerformed
+    private void cargarTabla(String respuesta){
+         DefaultTableModel modelo = (DefaultTableModel) this.jTableResultado.getModel(); 
+        //limpiamos la tabla 
+        modelo.removeRow(0);
+        
+        String[] auxRespuesta = respuesta.split("/");
+        Object [] fila = new Object[4];
+        fila[0] = auxRespuesta[0];
+        fila[1] = auxRespuesta[1];
+        fila[2] = auxRespuesta[2];
+        fila[3] = auxRespuesta[3];
+      
+        modelo.addRow(fila); 
+        this.jTableResultado.setModel(modelo);
+    }    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonConsultar;

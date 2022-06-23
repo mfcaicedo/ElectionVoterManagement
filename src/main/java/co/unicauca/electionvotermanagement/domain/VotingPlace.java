@@ -11,6 +11,7 @@ public class VotingPlace {
     /**
      * Atriubtos
      */
+    private int nitPlace;
     private String namePlace; 
     private String addressPlace; 
     private int numTables; 
@@ -19,7 +20,17 @@ public class VotingPlace {
     /**
     * Constructor 
     */
+    public VotingPlace(){
+        
+    }
     public VotingPlace(String namePlace, String addressPlace, int numTables) {
+        this.namePlace = namePlace;
+        this.addressPlace = addressPlace;
+        this.numTables = numTables;
+        this.lstTables = new ArrayList<>();
+    }
+    public VotingPlace(int nitPlace, String namePlace, String addressPlace, int numTables) {
+        this.nitPlace = nitPlace;
         this.namePlace = namePlace;
         this.addressPlace = addressPlace;
         this.numTables = numTables;
@@ -52,8 +63,28 @@ public class VotingPlace {
     public void setNumTables(int numTables) {
         this.numTables = numTables;
     }
+        public ArrayList<VotingTable> getLstTables() {
+        return lstTables;
+    }
+
+    public void setLstTables(ArrayList<VotingTable> lstTables) {
+        this.lstTables = lstTables;
+    }
+
+    public int getNitPlace() {
+        return nitPlace;
+    }
+
+    public void setNitPlace(int nitPlace) {
+        this.nitPlace = nitPlace;
+    }
     
-    public void addVotingTable(int idTable, int voterCapacity){
+    /**
+     * Agrega las mesas de un lugar de votación 
+     * @param idTable
+     * @param voterCapacity 
+     */
+    public void addVotingTable(String idTable, int voterCapacity){
         VotingTable table = new VotingTable(idTable, voterCapacity);
         if (table != null) {
             lstTables.add(table);

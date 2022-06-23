@@ -1,5 +1,9 @@
 package co.unicauca.electionvotermanagement.presentation;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author mfcaicedo, danieleraso
@@ -172,7 +176,12 @@ public class GUIMenu extends javax.swing.JFrame {
      */
     private void jMenuItemAgregarVotantesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAgregarVotantesActionPerformed
         // TODO add your handling code here:
-        GUIVoters objVoter = new GUIVoters();
+        GUIVoters objVoter = null;
+        try {
+            objVoter = new GUIVoters();
+        } catch (SQLException ex) {
+            Logger.getLogger(GUIMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
         objVoter.setMaximizable(true);
         this.jDesktopPaneEscritorio.add(objVoter);
         objVoter.show();

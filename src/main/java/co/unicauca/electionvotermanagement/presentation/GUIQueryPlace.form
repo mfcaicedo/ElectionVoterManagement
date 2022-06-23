@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
   <Properties>
     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[889, 435]"/>
@@ -158,6 +158,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="CONSULTAR"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonConsultarActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabelTituloResultado">
           <Properties>
@@ -204,7 +207,7 @@
                 <Component class="javax.swing.JTable" name="jTableResultado">
                   <Properties>
                     <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="4" rowCount="4">
+                      <Table columnCount="4" rowCount="1">
                         <Column editable="true" title="IDENTIFICACI&#xd3;N" type="java.lang.Object"/>
                         <Column editable="true" title="NOMBRE" type="java.lang.Object"/>
                         <Column editable="true" title="LUGAR VOTACI&#xd3;N" type="java.lang.Object"/>

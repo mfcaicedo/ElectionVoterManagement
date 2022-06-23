@@ -8,23 +8,23 @@ public class VotingTable {
     /**
      * Atributos
      */
-    private int idTable;
+    private String idTable;
     private int VotingCapacity;
     /**
     * Constructor 
     */
-    public VotingTable(int idTable, int VotingCapacity) {
+    public VotingTable(String idTable, int VotingCapacity) {
         this.idTable = idTable;
         this.VotingCapacity = VotingCapacity;
     }
     /**
     * Getters and setters 
     */
-    public int getIdTable() {
+    public String getIdTable() {
         return idTable;
     }
 
-    public void setIdTable(int idTable) {
+    public void setIdTable(String idTable) {
         this.idTable = idTable;
     }
 

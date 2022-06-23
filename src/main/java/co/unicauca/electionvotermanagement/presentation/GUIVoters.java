@@ -1,16 +1,30 @@
 package co.unicauca.electionvotermanagement.presentation;
 
+import co.unicauca.electionvotermanagement.domain.Voter;
+import co.unicauca.electionvotermanagement.domain.VotingPlace;
+import co.unicauca.electionvotermanagement.service.Service;
+import co.unicauca.electionvotermanagement.service.ServiceTable;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author mfcaicedo, danieleraso
  */
 public class GUIVoters extends javax.swing.JInternalFrame {
 
+    ArrayList<VotingPlace> lstVotingPlaces;
+    int numTable;
     /**
      * Creates new form GUIVoters
      */
-    public GUIVoters() {
+    public GUIVoters() throws SQLException {
         initComponents();
+        lstVotingPlaces = new ArrayList<>();
+        loadVotingPlace();
     }
 
     /**
@@ -28,9 +42,9 @@ public class GUIVoters extends javax.swing.JInternalFrame {
         jLabelLastName = new javax.swing.JLabel();
         jtxtName = new javax.swing.JTextField();
         jLabelName = new javax.swing.JLabel();
-        jtxtLastName1 = new javax.swing.JTextField();
+        jtxtIdentifier = new javax.swing.JTextField();
         jLabelIdentifier = new javax.swing.JLabel();
-        jtxtLastName2 = new javax.swing.JTextField();
+        jtxtLastName = new javax.swing.JTextField();
         jLabelVotingPlace = new javax.swing.JLabel();
         jtxtDireccion = new javax.swing.JTextField();
         jLabelAddress1 = new javax.swing.JLabel();
@@ -63,10 +77,14 @@ public class GUIVoters extends javax.swing.JInternalFrame {
         jLabelAddress1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabelAddress1.setText("DIRECCIÓN:");
 
-        jComboBoxVotingPlaces.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxVotingPlaces.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBoxVotingPlacesItemStateChanged(evt);
+            }
+        });
 
         jLabelVotingTable.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabelVotingTable.setText("LUGAR DE VOTACIÓN:");
+        jLabelVotingTable.setText("MESA DE VOTACIÓN:");
 
         jLabelAssignedTable.setText("Sin Asignar");
 
@@ -92,9 +110,9 @@ public class GUIVoters extends javax.swing.JInternalFrame {
                             .addGroup(jPanelCenterLayout.createSequentialGroup()
                                 .addGroup(jPanelCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jLabelLastName)
-                                    .addComponent(jtxtLastName1)
+                                    .addComponent(jtxtIdentifier)
                                     .addComponent(jLabelIdentifier)
-                                    .addComponent(jtxtLastName2)
+                                    .addComponent(jtxtLastName)
                                     .addComponent(jLabelVotingPlace)
                                     .addComponent(jComboBoxVotingPlaces, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jButtonRegisterVoter, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -125,15 +143,15 @@ public class GUIVoters extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jtxtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jtxtLastName2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtxtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelCenterLayout.createSequentialGroup()
                         .addComponent(jLabelIdentifier)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanelCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jtxtLastName1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jtxtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanelCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jtxtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jtxtIdentifier, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanelCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabelVotingPlace)
@@ -172,8 +190,85 @@ public class GUIVoters extends javax.swing.JInternalFrame {
      */
     private void jButtonRegisterVoterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegisterVoterActionPerformed
         // TODO add your handling code here:
+        //recuperemos los valores 
+        String lastNameVoter = this.jtxtLastName.getText();
+        String nameVoter = this.jtxtName.getText();
+        int identifierVoter = Integer.parseInt(this.jtxtIdentifier.getText());
+        String addressVoter = this.jtxtDireccion.getText();
+        String placeVoting = this.jComboBoxVotingPlaces.getSelectedItem().toString();
+        String[] idPlaceVoting = placeVoting.split("_");
+        int idPlace = Integer.parseInt(idPlaceVoting[1]);
+        
+        //1. crear el votante 
+        Voter objVoter = new Voter(identifierVoter, nameVoter, lastNameVoter, addressVoter);
+        ServiceTable objServiceTable = new ServiceTable();
+        int respuesta = 0;
+        try {
+            respuesta = objServiceTable.addVoter(objVoter);
+        } catch (SQLException ex) {
+            Logger.getLogger(GUIVoters.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        if (respuesta == 1) {
+            
+            try {
+                //2. crear el votingTableVoter
+                respuesta = objServiceTable.addVotingTableVoter(identifierVoter, numTable);
+            } catch (SQLException ex) {
+                Logger.getLogger(GUIVoters.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            JOptionPane.showInternalMessageDialog(this, "Votante insertado con éxito","Insertar votante", JOptionPane.INFORMATION_MESSAGE);
+        }else{
+            JOptionPane.showInternalMessageDialog(this, "Eror en la inserción del votante","Insertar votante", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        
+        
+        
+        
+        
     }//GEN-LAST:event_jButtonRegisterVoterActionPerformed
-
+    /**
+     * Detecta los cambios en el jComboBox
+     * @param evt 
+     */
+    private void jComboBoxVotingPlacesItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxVotingPlacesItemStateChanged
+        // TODO add your handling code here:
+        
+        String placeVoting = this.jComboBoxVotingPlaces.getSelectedItem().toString();
+        String[] idPlaceVoting = placeVoting.split("_");
+        int idPlace = Integer.parseInt(idPlaceVoting[1]);
+        //asigmación de la mesa al azar 
+        assignedTableVoter(idPlace);
+        
+    }//GEN-LAST:event_jComboBoxVotingPlacesItemStateChanged
+    /**
+     * Métodos 
+     */
+    public void assignedTableVoter(int idPlace){
+        VotingPlace objPlace = new VotingPlace();
+        for (int i = 0; i < lstVotingPlaces.size(); i++) {
+            if (lstVotingPlaces.get(i).getNitPlace() == idPlace) {
+                objPlace = lstVotingPlaces.get(i);
+            }
+        }
+        numTable = getRandomNumber(1, objPlace.getNumTables());
+        String assignedTable = objPlace.getNamePlace() + "_" + numTable;
+        this.jLabelAssignedTable.setText(assignedTable);
+    }
+    public int getRandomNumber(int min, int max) {
+        return (int) ((Math.random() * (max - min)) + min);
+    }
+    public void loadVotingPlace() throws SQLException{
+       Service objService = new Service();
+      
+       lstVotingPlaces = objService.loadVotingPlace();
+        for (int i = 0; i < lstVotingPlaces.size(); i++) {
+            this.jComboBoxVotingPlaces.addItem(lstVotingPlaces.get(i).getNamePlace() + "_"+lstVotingPlaces.get(i).getNitPlace());
+        }
+    }
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonRegisterVoter;
@@ -189,8 +284,8 @@ public class GUIVoters extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabelVotingTable;
     private javax.swing.JPanel jPanelCenter;
     private javax.swing.JTextField jtxtDireccion;
-    private javax.swing.JTextField jtxtLastName1;
-    private javax.swing.JTextField jtxtLastName2;
+    private javax.swing.JTextField jtxtIdentifier;
+    private javax.swing.JTextField jtxtLastName;
     private javax.swing.JTextField jtxtName;
     // End of variables declaration//GEN-END:variables
 }

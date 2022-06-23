@@ -1,5 +1,9 @@
 package co.unicauca.electionvotermanagement.presentation;
 
+import co.unicauca.electionvotermanagement.domain.VotingPlace;
+import co.unicauca.electionvotermanagement.service.ServiceVotingPlace;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author mfcaicedo, danieleraso
@@ -159,6 +163,43 @@ public class GUIVotingPlace extends javax.swing.JInternalFrame {
      */
     private void jButtonRegisterVotingPlaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegisterVotingPlaceActionPerformed
         // TODO add your handling code here:
+        
+        //recuperemos los valores 
+        String namePlace = this.jtxtNamePlace.getText();
+        String addressPlace = this.jtxtAddressPlace.getText();
+        int numTables = this.jSliderNumTables.getValue();
+        int voterCapacity = this.jSliderVoterCapacity.getValue();
+        System.out.println("nomnbre: "+ namePlace);
+        System.out.println("dir: "+ addressPlace);
+        System.out.println("numero mesas: "+ numTables);
+        System.out.println("capacidad: "+ voterCapacity);
+        try {
+            VotingPlace objPlace = new VotingPlace(namePlace, addressPlace, numTables);
+            
+
+            
+            ServiceVotingPlace objServiceVoting = new ServiceVotingPlace();
+            //creamos el lugar de votacion 
+            int result = objServiceVoting.addVotingPlace(objPlace);
+            if (result == 1) {
+                //creo las mesas 
+                for (int i = 0; i < numTables; i++) {
+                    objPlace.addVotingTable(namePlace+"_"+i, voterCapacity);
+                }
+                for (int i = 0; i < objPlace.getNumTables(); i++) {
+                    result = objServiceVoting.addVotingTable(objPlace.getLstTables().get(i));
+                }
+                
+                
+                JOptionPane.showInternalMessageDialog(this, "Lugar de votación insertado con éxito","Insertar lugar de votación", JOptionPane.INFORMATION_MESSAGE);
+            }else{
+                JOptionPane.showInternalMessageDialog(this, "Eror en la inserción","Insertar lugar de votación", JOptionPane.ERROR_MESSAGE);
+            }
+          
+           
+            
+        } catch (Exception e) {
+        }
         
     }//GEN-LAST:event_jButtonRegisterVotingPlaceActionPerformed
     /**
