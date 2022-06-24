@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package co.unicauca.electionvotermanagement.domain;
 
 /**
@@ -25,6 +20,9 @@ public abstract class Person {
         this.name = name;
         this.lastName = lastName;
     }
+    /**
+     * Constructor vacío 
+     */
     public Person(){
         
     }

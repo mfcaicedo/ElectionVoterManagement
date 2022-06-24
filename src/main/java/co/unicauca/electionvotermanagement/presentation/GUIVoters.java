@@ -2,8 +2,8 @@ package co.unicauca.electionvotermanagement.presentation;
 
 import co.unicauca.electionvotermanagement.domain.Voter;
 import co.unicauca.electionvotermanagement.domain.VotingPlace;
-import co.unicauca.electionvotermanagement.service.Service;
 import co.unicauca.electionvotermanagement.service.ServiceTable;
+import co.unicauca.electionvotermanagement.service.ServiceVotingPlace;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -18,6 +18,8 @@ public class GUIVoters extends javax.swing.JInternalFrame {
 
     ArrayList<VotingPlace> lstVotingPlaces;
     int numTable;
+    String assignedTable;
+    int idTable;
     /**
      * Creates new form GUIVoters
      */
@@ -195,9 +197,6 @@ public class GUIVoters extends javax.swing.JInternalFrame {
         String nameVoter = this.jtxtName.getText();
         int identifierVoter = Integer.parseInt(this.jtxtIdentifier.getText());
         String addressVoter = this.jtxtDireccion.getText();
-        String placeVoting = this.jComboBoxVotingPlaces.getSelectedItem().toString();
-        String[] idPlaceVoting = placeVoting.split("_");
-        int idPlace = Integer.parseInt(idPlaceVoting[1]);
         
         //1. crear el votante 
         Voter objVoter = new Voter(identifierVoter, nameVoter, lastNameVoter, addressVoter);
@@ -212,7 +211,12 @@ public class GUIVoters extends javax.swing.JInternalFrame {
             
             try {
                 //2. crear el votingTableVoter
-                respuesta = objServiceTable.addVotingTableVoter(identifierVoter, numTable);
+                //busqueda del id de la tabla 
+                idTable = objServiceTable.getIdTable(assignedTable);
+                if (idTable != 0) {
+                    respuesta = objServiceTable.addVotingTableVoter(identifierVoter, idTable);
+                }
+                
             } catch (SQLException ex) {
                 Logger.getLogger(GUIVoters.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -221,11 +225,6 @@ public class GUIVoters extends javax.swing.JInternalFrame {
         }else{
             JOptionPane.showInternalMessageDialog(this, "Eror en la inserción del votante","Insertar votante", JOptionPane.ERROR_MESSAGE);
         }
-        
-        
-        
-        
-        
         
     }//GEN-LAST:event_jButtonRegisterVoterActionPerformed
     /**
@@ -238,12 +237,13 @@ public class GUIVoters extends javax.swing.JInternalFrame {
         String placeVoting = this.jComboBoxVotingPlaces.getSelectedItem().toString();
         String[] idPlaceVoting = placeVoting.split("_");
         int idPlace = Integer.parseInt(idPlaceVoting[1]);
-        //asigmación de la mesa al azar 
+        //asignación de la mesa al azar 
         assignedTableVoter(idPlace);
         
     }//GEN-LAST:event_jComboBoxVotingPlacesItemStateChanged
     /**
-     * Métodos 
+     * asigna la mesa al votante 
+     * @param idPlace id del lugar 
      */
     public void assignedTableVoter(int idPlace){
         VotingPlace objPlace = new VotingPlace();
@@ -253,22 +253,30 @@ public class GUIVoters extends javax.swing.JInternalFrame {
             }
         }
         numTable = getRandomNumber(1, objPlace.getNumTables());
-        String assignedTable = objPlace.getNamePlace() + "_" + numTable;
+        assignedTable = objPlace.getNamePlace() + "_" + numTable;
         this.jLabelAssignedTable.setText(assignedTable);
     }
+    /**
+     * 
+     * @param min valor mínimo
+     * @param max valor máximo 
+     * @return número aleatorio entre el mínimo y el máximo 
+     */
     public int getRandomNumber(int min, int max) {
         return (int) ((Math.random() * (max - min)) + min);
     }
+    /**
+     * carga el lugar de votación 
+     * @throws SQLException manejo de excepciones 
+     */
     public void loadVotingPlace() throws SQLException{
-       Service objService = new Service();
+       ServiceVotingPlace objService = new ServiceVotingPlace();
       
        lstVotingPlaces = objService.loadVotingPlace();
         for (int i = 0; i < lstVotingPlaces.size(); i++) {
             this.jComboBoxVotingPlaces.addItem(lstVotingPlaces.get(i).getNamePlace() + "_"+lstVotingPlaces.get(i).getNitPlace());
         }
     }
-    
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonRegisterVoter;

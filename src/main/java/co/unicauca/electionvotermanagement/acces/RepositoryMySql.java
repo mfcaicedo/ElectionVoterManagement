@@ -3,7 +3,6 @@ package co.unicauca.electionvotermanagement.acces;
 import co.unicauca.electionvotermanagement.domain.Voter;
 import co.unicauca.electionvotermanagement.domain.VotingPlace;
 import co.unicauca.electionvotermanagement.domain.VotingTable;
-import com.google.gson.Gson;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,23 +16,18 @@ import java.util.ArrayList;
 public class RepositoryMySql {
     
     ConnectDB connect = new ConnectDB();
-    
-     
+    /**
+     * Constructor vacío
+     */
     public RepositoryMySql(){
         
     } 
-    
-    public Connection conexion(){
-        Connection con  = null;
-        try {
-            con = connect.getConexion();
-            //System.out.println("Conection version 6");
-        } catch (Exception e) {
-            System.out.println("Error: "+ e);
-        }
-        return con;
-    }
-    public int addVotingPlace(VotingPlace place){
+    /**
+     * Agrega un lugar de votación 
+     * @param place objeto tipo VotingPlace que tiene todos los parámetros de el lugar 
+     * @return 1 si es correcto o 0 si es incorrecta la inserción 
+     */
+    public int addVotingPlace(VotingPlace place) throws SQLException{
         
         Connection con  = null;
         PreparedStatement stmt;
@@ -53,10 +47,18 @@ public class RepositoryMySql {
         } catch (SQLException e) {
             System.out.println("Error en la inserción ");
             System.out.println(e);
+        }finally{
+            con.close();            
         }
         return 0; 
-        
     }
+    /**
+     * Agrega una mesa de votación. 
+     * @param table objeto con los valores de la mesa. 
+     * @param idVotingPlace id del lugar al cual se le asociará la mesa (FOREIGN KEY)
+     * @return 1 si la inserción es correcta 0 en caso contrario. 
+     * @throws SQLException Manejo de errores de SQL 
+     */
     public int addVotingTable(VotingTable table, int idVotingPlace) throws SQLException{
         
         Connection con  = null;
@@ -80,10 +82,14 @@ public class RepositoryMySql {
         }finally{
             con.close();
         }
-        
         return 0; 
-        
     }
+    /**
+     * Agrega un votante.
+     * @param voter objeto que tiene los valores del votante 
+     * @return 1 si la inserción es correcta 0 en caso contrario 
+     * @throws SQLException manejo de excepciones 
+     */
     public int addVoter(Voter voter) throws SQLException{
         
         Connection con  = null;
@@ -108,10 +114,15 @@ public class RepositoryMySql {
         }finally{
             con.close();
         }
-        
         return 0; 
-        
     }
+    /**
+     * Agrega a la tabla auxiliar llamada VotingTableVoter (Mesa_votacion_Votante)
+     * @param identifierVoter identificación del votante
+     * @param idTable id de la mesa 
+     * @return 1 si es correcta la inserción 0 en caso contrario. 
+     * @throws SQLException manejo de excepciones 
+     */
     public int addVotingTableVoter(int identifierVoter, int  idTable) throws SQLException{
         Connection con  = null;
         PreparedStatement stmt;
@@ -135,7 +146,11 @@ public class RepositoryMySql {
         }
         return 0; 
     }
-    
+    /**
+     * obtiene el nit del lugar del último lugar de votación agregado. 
+     * @return nitPlace nit del lugar;
+     * @throws SQLException manejo de excepciones 
+     */
     public int getNitLastVotingPlace() throws SQLException{
         Connection con  = null;
         PreparedStatement stmt;
@@ -152,7 +167,6 @@ public class RepositoryMySql {
             if(result.next()) { 
                 nitPlace = result.getInt("nitPlace"); 
             }
-            System.out.println("nitPlace: "+ nitPlace);
             return nitPlace;
            
         } catch (SQLException e) {
@@ -163,6 +177,11 @@ public class RepositoryMySql {
         }
         return nitPlace;
     }
+    /**
+     * obtener los lugares de votación 
+     * @return lista de los lugares de votación 
+     * @throws SQLException manejo de excepciones 
+     */
     public ArrayList<VotingPlace> getVotingPlace() throws SQLException{
         Connection con  = null;
         PreparedStatement stmt;
@@ -194,10 +213,42 @@ public class RepositoryMySql {
         return auxListVotingPlaces;
     }
     /**
-     * Consulta del lugar de votación de una persona
-     * @param identifier
-     * @return
-     * @throws SQLException 
+     * obtener el id de la mesa 
+     * @param nameTable nombre de la mesa 
+     * @return id de la mesa correspondiente al nombre.
+     * @throws SQLException manejo de excepciones 
+     */
+    public int getIdTable(String nameTable) throws SQLException{
+        
+        Connection con  = null;
+        PreparedStatement stmt;
+        String sql;
+        ResultSet result;
+        int idTable = 0;
+        try {
+            con = connect.getConexion();
+            sql = "SELECT idTable FROM VotingTable WHERE nameTable ='"+nameTable+"'";
+            stmt = con.prepareStatement(sql);
+            result = stmt.executeQuery(sql);
+            
+            if(result.next()) { 
+                idTable = result.getInt("idTable"); 
+            }
+            return idTable;
+           
+        } catch (SQLException e) {
+            System.out.println("Error en la consulta ");
+            System.out.println(e);
+        }finally{
+            con.close();
+        }
+        return idTable;
+    }
+    /**
+     * Consulta del lugar de votación de una persona (votante)
+     * @param identifier identificación del votante 
+     * @return cadena con toda la información. 
+     * @throws SQLException manejo de excepciones  
      */
     public String searchVotingPlace(int identifier) throws SQLException{
         
@@ -208,7 +259,7 @@ public class RepositoryMySql {
         String respuesta = "";
         try {
             con = connect.getConexion();
-            sql = "SELECT identifierVoter, nameVoter, directionPlace, idTable FROM Voter \n" +
+            sql = "SELECT identifierVoter, nameVoter, directionPlace, idTable, nameTable FROM Voter \n" +
                     "INNER JOIN votingtablevoter ON voter.identifierVoter = votingtablevoter.Voter_identifier\n" +
                     "INNER JOIN VotingTable ON VotingTable.idTable = votingtablevoter.TableVoting_idTable\n" +
                     "INNER JOIN votingPlace ON votingplace.nitPlace = votingtable.VotingPlace_nitPlace\n" +
@@ -219,7 +270,8 @@ public class RepositoryMySql {
             
             if(result.next()) { 
                 respuesta = result.getInt("identifierVoter") + "/" + result.getString("nameVoter") + 
-                        "/" + result.getString("directionPlace") + "/" + result.getInt("idTable");
+                        "/" + result.getString("directionPlace") + "/" + result.getInt("idTable") + "/"+ 
+                        result.getString("nameTable");
             }         
             return respuesta;
            
@@ -229,9 +281,6 @@ public class RepositoryMySql {
         }finally{
             con.close();
         }
-        
-        
         return respuesta;
     }
-    
 }

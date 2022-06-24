@@ -1,14 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package co.unicauca.electionvotermanagement.presentation;
 
 import co.unicauca.electionvotermanagement.service.ServiceVoter;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -177,31 +173,38 @@ public class GUIQueryPlace extends javax.swing.JInternalFrame {
      */
     private void jButtonConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarActionPerformed
         try {
-            // recupero el campo
             int identifierVoter = Integer.parseInt(this.jtxtIdentifier.getText());
             ServiceVoter objService = new ServiceVoter();
             String respuesta = objService.searchVotingPlace(identifierVoter);
             if (!respuesta.equals("")) {
                //cargamos la tabla 
-                cargarTabla(respuesta);
-                
+                loadTable(respuesta);
+            }else{
+                JOptionPane.showInternalMessageDialog(this, "La identificación no existe","Consulta lugar de Votación", JOptionPane.ERROR_MESSAGE);
             }
         } catch (SQLException ex) {
             Logger.getLogger(GUIQueryPlace.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NumberFormatException e){
+            JOptionPane.showInternalMessageDialog(this, "La identificación debe ser de tipo numérica","Consulta lugar de Votación", JOptionPane.WARNING_MESSAGE);
         }
         
     }//GEN-LAST:event_jButtonConsultarActionPerformed
-    private void cargarTabla(String respuesta){
+    /**
+     * cargarmos la tabla 
+     * @param respuesta  cadena con la información a cargar en la tabla. 
+     */
+    private void loadTable(String respuesta){
          DefaultTableModel modelo = (DefaultTableModel) this.jTableResultado.getModel(); 
         //limpiamos la tabla 
         modelo.removeRow(0);
         
         String[] auxRespuesta = respuesta.split("/");
+        String[] numTable = auxRespuesta[4].split("_");
         Object [] fila = new Object[4];
         fila[0] = auxRespuesta[0];
         fila[1] = auxRespuesta[1];
         fila[2] = auxRespuesta[2];
-        fila[3] = auxRespuesta[3];
+        fila[3] = numTable[1];
       
         modelo.addRow(fila); 
         this.jTableResultado.setModel(modelo);

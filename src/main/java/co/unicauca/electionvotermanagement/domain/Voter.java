@@ -13,7 +13,6 @@ public class Voter extends Person {
 
     /**
      * Contructor 
-     * @param address 
      */
     public Voter(int identifier, String name, String lastName,String address) {
         super(identifier, name, lastName);
@@ -30,5 +29,4 @@ public class Voter extends Person {
         this.address = address;
     }
   
-    
 }

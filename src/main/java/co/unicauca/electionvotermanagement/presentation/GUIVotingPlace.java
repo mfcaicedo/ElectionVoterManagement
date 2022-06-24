@@ -158,12 +158,10 @@ public class GUIVotingPlace extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     /**
-     * Acción del boton register voting place 
+     * Acción del boton que registra un lugar de votación.  
      * @param evt 
      */
     private void jButtonRegisterVotingPlaceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRegisterVotingPlaceActionPerformed
-        // TODO add your handling code here:
-        
         //recuperemos los valores 
         String namePlace = this.jtxtNamePlace.getText();
         String addressPlace = this.jtxtAddressPlace.getText();
@@ -190,9 +188,8 @@ public class GUIVotingPlace extends javax.swing.JInternalFrame {
                 JOptionPane.showInternalMessageDialog(this, "Eror en la inserción","Insertar lugar de votación", JOptionPane.ERROR_MESSAGE);
             }
           
-           
-            
         } catch (Exception e) {
+            System.out.println("Error inesperado");
         }
         
     }//GEN-LAST:event_jButtonRegisterVotingPlaceActionPerformed
@@ -205,7 +202,7 @@ public class GUIVotingPlace extends javax.swing.JInternalFrame {
         this.jLabelContNumTables.setText(String.valueOf(this.jSliderNumTables.getValue()));
     }//GEN-LAST:event_jSliderNumTablesStateChanged
     /**
-     * Evento se dispara cuando cmabia el valor del slider de VoterCapacity
+     * Evento se dispara cuando cambia el valor del slider de VoterCapacity
      * @param evt 
      */
     private void jSliderVoterCapacityStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSliderVoterCapacityStateChanged

@@ -9,7 +9,6 @@ import java.util.logging.Logger;
  * @author mfcaicedo, danieleraso
  */
 public class GUIMenu extends javax.swing.JFrame {
-
     /**
      * Creates new form GUIMenu
      */
@@ -135,7 +134,7 @@ public class GUIMenu extends javax.swing.JFrame {
      * FUNCIONES PROGRAMADAS PARA DARLE FUNCIONALIDAD A LA APLICACIÓN 
      */
     /**
-     * Método que invoca al jFrama interno de la consulta 
+     * Método que invoca al jFrame interno de la consulta 
      */
     private void invocarGUIConsulta(){
         GUIQueryPlace objConsulta = new GUIQueryPlace();

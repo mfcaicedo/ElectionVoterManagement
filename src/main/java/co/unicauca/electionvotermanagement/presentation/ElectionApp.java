@@ -1,8 +1,5 @@
 package co.unicauca.electionvotermanagement.presentation;
 
-import co.unicauca.electionvotermanagement.acces.ConnectDB;
-import java.sql.Connection;
-
 /**
  *
  * @author mfcaicedo, danielerazo
@@ -41,24 +38,6 @@ public class ElectionApp {
             public void run() {
                 new GUIMenu().setVisible(true);
             }
-        });
-        
-        //Pruebas 
-        System.out.println("empezamos ");
-        
-        //Probando la conexion de la base de datos 
-        ConnectDB connect = new ConnectDB();
-        
-        try {
-            Connection con = connect.getConexion();
-            System.out.println("Conection version 6");
-        } catch (Exception e) {
-            System.out.println("Error: "+ e);
-        }   
-        
-       
-        
-        
+        });   
     }
-    
 }

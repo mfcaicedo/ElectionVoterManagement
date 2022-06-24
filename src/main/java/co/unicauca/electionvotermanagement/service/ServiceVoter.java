@@ -16,8 +16,9 @@ public class ServiceVoter {
         this.objRepo = new RepositoryMySql();
     }
     /**
-     * Busqudda de lugar de votación 
-     * @param identifier 
+     * Fchada del método -> Busqudda de lugar de votación 
+     * @param identifier identificación de la persona (votante). 
+     * @return  cadena con el resultado de la consulta. 
      */
     public String searchVotingPlace(int identifier) throws SQLException{
         return objRepo.searchVotingPlace(identifier);
